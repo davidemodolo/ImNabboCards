@@ -60,7 +60,7 @@ class _SmallCardState extends State<SmallCard> {
         child: Column(
           children: [
             Container(
-              width: globals.cardsList[widget.index].active ? 250 : 150,
+              width: globals.cardsList[widget.index].active ? 200 : 150,
               decoration: BoxDecoration(
                 border: Border.all(
                   color: widget.tf
@@ -95,14 +95,35 @@ class _SmallCardState extends State<SmallCard> {
                       ),
                     ),
             ),
+            const SizedBox(
+              height: 5,
+            ),
             Column(
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      globals.cardsList[widget.index].changeMarker();
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: globals.cardsList[widget.index].isMarked()
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                  child: Text(
+                    globals.cardsList[widget.index].getMarkerText(),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: rarityIcons,
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +144,9 @@ class _SmallCardState extends State<SmallCard> {
                     ),
                     Text(
                       globals.cardsList[widget.index].uses.toString(),
-                      style: const TextStyle(fontSize: 20),
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
                     const SizedBox(
                       width: 5,

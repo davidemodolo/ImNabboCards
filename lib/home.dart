@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _index = 0;
   // int _usrIndex = 0;
   bool _showBigCard = false;
+  int activeClass = 0;
 
   String rarityPercentages = "";
 
@@ -41,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     for (NabboCard card in globals.cardsList) {
       if (card.active &&
           card.rarity > 0 &&
-          (card.uses > 0 || card.uses == -1)) {
+          (card.uses > 0 || card.uses == -1) &&
+          card.isMarked()) {
         rarityIndexes[card.rarity] += 1;
       }
     }
@@ -81,7 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
     for (NabboCard card in globals.cardsList) {
       if (card.active &&
           card.rarity == rarityIndex &&
-          (card.uses > 0 || card.uses == -1)) {
+          (card.uses > 0 || card.uses == -1) &&
+          card.isMarked()) {
         indexes.add(globals.cardsList.indexOf(card));
       }
     }
@@ -138,8 +141,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final cards = json.decode(file.readAsStringSync());
     // 2. create the list of Card objcects
     globals.cardsList = cards["cards"]
-        .map<NabboCard>(
-            (e) => NabboCard(e["path"], e["rarity"], e["active"], e["uses"]))
+        .map<NabboCard>((e) => NabboCard(
+            e["path"], e["rarity"], e["active"], e["uses"], e["marker"]))
         .toList();
     // 3. read all the .png in the assets/cards
     final List<String> paths =
@@ -156,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
     for (String path in paths) {
       if (!globals.cardsList
           .any((card) => card.path == fixPath(path).substring(20))) {
-        globals.cardsList.add(NabboCard(path.substring(20), -1, true, 0));
+        globals.cardsList.add(NabboCard(path.substring(20), -1, true, 0, 1));
         // print("Added card with path $path");
       }
     }
@@ -223,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    _showBigCard = false;
+                    globals.rollMarker();
                   });
                 },
                 style: ElevatedButton.styleFrom(
@@ -231,17 +234,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     horizontal: 40,
                     vertical: 20,
                   ),
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.amber,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: const Text(
-                  "CLEAR",
-                  style: TextStyle(
+                child: Text(
+                  globals.getMarkerText(),
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),
