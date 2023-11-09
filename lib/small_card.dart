@@ -56,7 +56,7 @@ class _SmallCardState extends State<SmallCard> {
         globals.saveJsonState();
       }),
       child: Container(
-        margin: const EdgeInsets.all(0.5),
+        margin: const EdgeInsets.all(2),
         child: Column(
           children: [
             Container(

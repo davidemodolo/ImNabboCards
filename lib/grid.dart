@@ -21,7 +21,7 @@ class _CardGridState extends State<CardGrid> {
           itemCount: globals.cardsList.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 5,
-            childAspectRatio: 9 / 16,
+            childAspectRatio: 0.4,
           ),
           itemBuilder: (BuildContext context, int i) {
             return SmallCard(
