@@ -5,7 +5,7 @@
 4. start the program.
 
 **Setup:**
-- long press on a card to add/remove it from the pool;
+- long press on a card to add/remove (enable/disable) it from the pool;
 - single press on a card to increase its rarity (1 to 6 and back);
 - set the number of times a card can be drawn, set as `-1` if unlimited;
 - set the marker of each card as A or B.
@@ -17,7 +17,8 @@
 4. 1.5s animation from right that makes the drawn card appear;
 5. card stays for 5 seconds;
 6. hide the card;
-7. add the drawn card to the log file.
+7. add the drawn card to the log file;
+8. reduce by one the number of uses left and disables the card if it reaches `0`.
 
 If there isn't any available card of the randomly selected rarity, it first checks the lower rarities and then the higher rarities.
 > _e.g.: if Rarity 4 is selected but no cards in it, the check order is 3-2-1-5-6_.
