@@ -1,20 +1,25 @@
-# imnabbo
+**Before running:**
+1. put all `.png` in the `data\flutter_assets\assets\cards` folder (<u>AT LEAST ONE</u>);
+2. put a .mp3 file in the `data\flutter_assets\assets` folder;
+3. write the RGB color for the background in the `data\flutter_assets\assets\colorRGB.txt` file;
+4. start the program.
 
-## TODO:
+**Setup:**
+- long press on a card to add/remove it from the pool;
+- single press on a card to increase its rarity (1 to 6 and back);
+- set the number of times a card can be drawn, set as `-1` if unlimited;
+- set the marker of each card as A or B.
 
-- [ ] Aggiungere utilizzi rimanenti carte
-  
-  - idea:
-    - aggiungere utilizzi rimanenti nel json
-    - inserire pulsanti +/- sotto la carta
-    - se `utilizzi == -1`, allora infiniti (mappabile come U(nlimited) nel Json)
+**Draw steps:**
+1. play the `.mp3` file;
+2. randomly selects a rarity;
+3. randomly selects a card of such rarity;
+4. 1.5s animation from right that makes the drawn card appear;
+5. card stays for 5 seconds;
+6. hide the card;
+7. add the drawn card to the log file.
 
-- [ ] Aggiungere rarità massima: codificare come 7 (?) una rarità massima e poi fare dei calcoli per le varie rarità (magari con un mapping invece del `%6+1`), magari se rarità massima mettere una visuale diversa (stelline verdi), se pescata rarità massima, riprodurre un altro suono
+If there isn't any available card of the randomly selected rarity, it first checks the lower rarities and then the higher rarities.
+> _e.g.: if Rarity 4 is selected but no cards in it, the check order is 3-2-1-5-6_.
 
-- Modificare draw prob delle carte: attuale: pesca una rarità random, se non ci sono carte in quella rarità controlla nelle rarità più basse, se non ci sono carte nelle rarità più basse controlla in quelle più alte, se non trova nulla, semplicemente pesca la prima carta della lista (messo per non far esplodere il programma), dimmi se vuoi che faccio il check al contrario (quindi se esce la rarità 4 stelle ma non ci sono carte, provo prima a pescare dalle 5 e poi 6 facendo 5-6-3-2-1 invece di 3-2-1-5-6). In questo modo, la probabilità delle singole carte è data semplicemente da Percentuale_rarità/numero_carte_di_quella_rarità
-
-- Settare il colore in qualche modo: per il colore, non sono in grado di fare un color picker. Posso fare un file tipo colorRGB.txt in cui metti i tre valori RGB (es. 155, 230, 5) e li prende da lì.
-
-- 1.5 sec apparire, 1 sec sparire, ?? sec rimanere: usare due tempi diversi per far apparire e sparire la carta rischio di spaccare tutto, quindi se posso usare lo stesso tempo sarebbe meglio. Quanto vuoi che lo faccio rimanere?
-
-- mark A/B da attivare
+The pool can be made by **A** cards, **B** cards or **both**.
