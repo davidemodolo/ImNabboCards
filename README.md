@@ -1,5 +1,5 @@
 **Before running:**
-1. put all `.png` in the `data\flutter_assets\assets\cards` folder (<u>AT LEAST ONE</u>);
+1. put all `.png` in the `data\flutter_assets\assets\cards` folder (<u>at least one card; no whitespace characters in the names</u>);
 2. put a .mp3 file in the `data\flutter_assets\assets` folder;
 3. write the RGB color for the background in the `data\flutter_assets\assets\colorRGB.txt` file;
 4. start the program.
@@ -24,3 +24,22 @@ If there isn't any available card of the randomly selected rarity, it first chec
 > _e.g.: if Rarity 4 is selected but no cards in it, the check order is 3-2-1-5-6_.
 
 The pool can be made by **A** cards, **B** cards or **both**.
+
+JSON structure:
+```
+{
+  "cards": [
+    {
+      "path": "path_to_card_image.png",
+      "rarity": 1, // from 1 to 5, 0 if the card is new
+      "active": true, // if active in the card pool
+      "uses": 1, // uses left
+      "marker": 1 // 1 = A, 2 = B
+    },
+    .
+    .
+    .
+  ]
+}
+
+```
