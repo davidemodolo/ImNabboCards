@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:imnabbo/home.dart';
 
+import 'package:imnabbo/globals.dart' as globals;
+
 void main() {
   runApp(const MyApp());
 }
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     // create a Color object with the RGB values
     final Color cColor =
         Color.fromRGBO(int.parse(c[0]), int.parse(c[1]), int.parse(c[2]), 1.0);
+    globals.bgColor = cColor;
     return MaterialApp(
       title: 'Nabbo Cards',
       home: Scaffold(

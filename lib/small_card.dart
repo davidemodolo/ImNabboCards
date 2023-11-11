@@ -71,29 +71,27 @@ class _SmallCardState extends State<SmallCard> {
                   width: 5,
                 ),
               ),
-              child: globals.cardsList[widget.index].active
-                  ? Image(
-                      image: AssetImage(
-                        globals.cardsList[widget.index].path,
-                      ),
-                    )
-                  : ColorFiltered(
-                      colorFilter: const ColorFilter.mode(
-                        Colors.grey, // Apply grayscale filter
-                        BlendMode.saturation,
-                      ),
-                      child: ColorFiltered(
-                        colorFilter: const ColorFilter.mode(
-                          Colors.red, // Apply red filter
-                          BlendMode.plus,
-                        ),
-                        child: Image(
-                          image: AssetImage(
-                            globals.cardsList[widget.index].path,
-                          ),
-                        ),
+              child: Stack(
+                children: [
+                  Image(
+                    image: AssetImage(
+                      globals.cardsList[widget.index].path,
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Text(
+                      '${widget.index}',
+                      style: TextStyle(
+                        color: globals.bgColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 5,

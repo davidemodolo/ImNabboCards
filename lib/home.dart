@@ -21,7 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _showBigCard = false;
   int activeClass = 0;
 
-  String rarityPercentages = "";
+  String rarityPercentages =
+      "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%";
 
   void updateLog(String newLog) {
     final File logFile = File('data/flutter_assets/assets/log.txt');
@@ -30,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   int _getRandomIndex() {
-    // TODO: fix this by setting "if there is no card with the rarity, then go to the next rarity"
     // 1 = 34%, 2 = 25%, 3 = 18%, 4 = 13%, 5 = 8%, 6 = 2%
-
     // draw the rarity
     Random random = Random();
     int rarity = random.nextInt(100);
@@ -177,76 +176,97 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 40,
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  // check if roll.mp3 exists
-                  final File rollFile = File('assets/roll.mp3');
-                  if (!rollFile.existsSync()) {
-                    rarityPercentages = "roll.mp3 not found";
-                  }
-                  final player = AudioPlayer();
-                  await player.play(
-                    AssetSource('roll.mp3'),
-                  );
-                  setState(() {
-                    _index = _getRandomIndex();
-                    globals.cardsList[_index].cardDrawn();
-                    globals.saveJsonState();
-                    _showBigCard = true;
-                  });
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          // check if roll.mp3 exists
+                          final File rollFile = File('assets/roll.mp3');
+                          if (!rollFile.existsSync()) {
+                            rarityPercentages = "roll.mp3 not found";
+                          }
+                          final player = AudioPlayer();
+                          await player.play(
+                            AssetSource('roll.mp3'),
+                          );
+                          setState(() {
+                            _index = _getRandomIndex();
+                            globals.cardsList[_index].cardDrawn();
+                            globals.saveJsonState();
+                            _showBigCard = true;
+                          });
 
-                  // wait a second and set _showBigCard to false
-                  await Future.delayed(const Duration(seconds: 5));
-                  setState(() {
-                    _showBigCard = false;
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 20,
+                          // wait a second and set _showBigCard to false
+                          await Future.delayed(const Duration(seconds: 45));
+                          setState(() {
+                            _showBigCard = false;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 20,
+                          ),
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text(
+                          "ROLL",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            globals.rollMarker();
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 20,
+                          ),
+                          backgroundColor: Colors.amber,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: Text(
+                          globals.getMarkerText(),
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                  Column(
+                    children: [
+                      Text("LAST"),
+                      Text("CLEAR"),
+                    ],
                   ),
-                ),
-                child: const Text(
-                  "ROLL",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    globals.rollMarker();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 20,
-                  ),
-                  backgroundColor: Colors.amber,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                child: Text(
-                  globals.getMarkerText(),
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
+                  Column(
+                    children: [
+                      Text("SET X"),
+                      Text("SHOW"),
+                    ],
+                  )
+                ],
               ),
               const SizedBox(
                 height: 10,

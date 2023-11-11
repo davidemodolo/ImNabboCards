@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:imnabbo/nabbo_card.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -8,8 +9,9 @@ String cardsJsonDirectory = 'assets/cards.json';
 String cardsImagesDirectory = 'assets/cards';
 int activeMarker = 0;
 
+Color bgColor = Colors.purple;
+
 void saveJsonState() {
-  // apply replaceAll('\\', '/') to every path
   for (NabboCard card in cardsList) {
     card.path = card.path.replaceAll('\\', '/');
   }
