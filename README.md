@@ -34,6 +34,10 @@ If there isn't any available card of the randomly selected rarity, it first chec
 
 The pool can be made by **A** cards, **B** cards or **both**.
 
+Folders structure:
+
+*TODO*
+
 JSON structure:
 ```
 {

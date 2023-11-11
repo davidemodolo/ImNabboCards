@@ -15,11 +15,13 @@ class NabboCard {
   }
 
   bool isMarked() {
-    return ((globals.activeMarker == marker) || (globals.activeMarker == 0));
+    return ((globals.activeMarker == marker) ||
+        (globals.activeMarker == 0) ||
+        (marker == 0));
   }
 
   void changeMarker() {
-    marker = (marker == 1) ? 2 : 1;
+    marker = (marker + 1) % 3;
   }
 
   String getMarkerText() {
