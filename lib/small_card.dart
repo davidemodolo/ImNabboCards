@@ -90,8 +90,8 @@ class _SmallCardState extends State<SmallCard> {
                     ),
                   ),
                   Positioned(
-                    top: 0,
-                    right: 0,
+                    top: 5,
+                    right: 5,
                     child: Text(
                       '${widget.index}',
                       style: TextStyle(

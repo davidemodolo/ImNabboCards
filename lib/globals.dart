@@ -5,9 +5,11 @@ import 'dart:io';
 
 List<NabboCard> cardsList = [];
 
-String cardsJsonDirectory = 'assets/cards.json';
-String cardsImagesDirectory = 'assets/cards';
+const String cardsJsonDirectory = 'data/flutter_assets/assets/cards.json';
+const String cardsImagesDirectory = 'data/flutter_assets/assets/cards';
 int activeMarker = 0;
+const String bgColorFile = 'data/flutter_assets/assets/colorRGB.txt';
+const String logFile = 'data/flutter_assets/assets/log.txt';
 
 Color bgColor = Colors.purple;
 
@@ -26,7 +28,7 @@ void saveJsonState() {
       .toList();
   final Map<String, dynamic> jsonMap = {"cards": cardsMapList};
   final String jsonString = json.encode(jsonMap);
-  final File file = File("data/flutter_assets/$cardsJsonDirectory");
+  final File file = File(cardsJsonDirectory);
   file.writeAsStringSync(jsonString);
 }
 

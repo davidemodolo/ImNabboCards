@@ -34,6 +34,14 @@ If there isn't any available card of the randomly selected rarity, it first chec
 
 The pool can be made by **A** cards, **B** cards or **both**.
 
+**Functions:** *TODO*
+- DRAW
+- ALL/A/B
+- LAST
+- CLEAR
+- INDEX
+- SHOW
+
 Folders structure:
 
 *TODO*
@@ -65,3 +73,4 @@ JSON structure:
 - [ ] ask again for check order if no card available
 - [ ] comment code
 - [ ] OBS smoothness 840 nice glowing effect
+- [ ] draw with index overrides LAST

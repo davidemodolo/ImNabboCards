@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final File cFile = File('data/flutter_assets/assets/colorRGB.txt');
+    final File cFile = File(globals.bgColorFile);
     // the file is like 233, 3, 5, that's the RGB value for the background color
     // split the string by the comma
     final List<String> c = cFile.readAsStringSync().split(',');

@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
 
   void updateLog(String newLog) {
-    final File logFile = File('data/flutter_assets/assets/log.txt');
+    final File logFile = File(globals.logFile);
     // add the newLog line to the file
     logFile.writeAsStringSync("${logFile.readAsStringSync()}\n$newLog");
   }
@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // 1. read the cards.json file if it exists, otherwise create it
-    final File file = File("data/flutter_assets/${globals.cardsJsonDirectory}");
+    final File file = File(globals.cardsJsonDirectory);
     if (!file.existsSync()) {
       file.createSync();
       final Map<String, dynamic> jsonMap = {"cards": []};
@@ -148,11 +148,10 @@ class _HomeScreenState extends State<HomeScreen> {
             e["path"], e["rarity"], e["active"], e["uses"], e["marker"]))
         .toList();
     // 3. read all the .png in the assets/cards
-    final List<String> paths =
-        Directory("data/flutter_assets/${globals.cardsImagesDirectory}")
-            .listSync()
-            .map((e) => e.path)
-            .toList();
+    final List<String> paths = Directory(globals.cardsImagesDirectory)
+        .listSync()
+        .map((e) => e.path)
+        .toList();
 
     //4. remove from the cardsList any card that is not in the paths list
     globals.cardsList.removeWhere((card) =>
