@@ -73,9 +73,20 @@ class _SmallCardState extends State<SmallCard> {
               ),
               child: Stack(
                 children: [
-                  Image(
-                    image: AssetImage(
-                      globals.cardsList[widget.index].path,
+                  ColorFiltered(
+                    colorFilter: !globals.cardsList[widget.index].active
+                        ? const ColorFilter.mode(
+                            Colors.grey,
+                            BlendMode.saturation,
+                          )
+                        : const ColorFilter.mode(
+                            Colors.transparent,
+                            BlendMode.saturation,
+                          ),
+                    child: Image(
+                      image: AssetImage(
+                        globals.cardsList[widget.index].path,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -126,7 +137,6 @@ class _SmallCardState extends State<SmallCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // TODO: make these buttons work
                     ElevatedButton(
                       onPressed: () {
                         if (globals.cardsList[widget.index].uses > -1) {

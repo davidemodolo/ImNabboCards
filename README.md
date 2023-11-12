@@ -58,7 +58,10 @@ JSON structure:
 ```
 
 ## TODO
-- [ ] show last drawn card
-- [ ] show a specific card
+- [x] show last drawn card - time unlimited
+- [x] show a specific card - time unlimited
 - [ ] decide a number of markers
 - [ ] ask for screen resolution
+- [ ] ask again for check order if no card available
+- [ ] comment code
+- [ ] OBS smoothness 840 nice glowing effect

@@ -17,12 +17,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _index = 0;
-  // int _usrIndex = 0;
+  int _usrIndex = 0;
   bool _showBigCard = false;
-  int activeClass = 0;
 
-  String rarityPercentages =
-      "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%";
+  String _rarityPercentages =
+      "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
 
   void updateLog(String newLog) {
     final File logFile = File('data/flutter_assets/assets/log.txt');
@@ -68,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           rarityIndex += 1;
           if (rarityIndex > 6) {
             setState(() {
-              rarityPercentages = "No card found";
+              _rarityPercentages = "No card found";
             });
             return 0;
           }
@@ -78,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // get the list of indexes of cards with rarity == rarityIndex
+
     List<int> indexes = [];
     for (NabboCard card in globals.cardsList) {
       if (card.active &&
@@ -88,25 +88,31 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
     int newIndex = indexes[random.nextInt(indexes.length)];
-    setState(() {
-      rarityPercentages = "$rarityIndex, $newIndex, ${indexes.length}";
-    });
-    // List<int> rarityIndexes = [0, 0, 0, 0, 0, 0, 0];
-    // for (NabboCard card in globals.cardsList) {
-    //   if (card.active &&
-    //       card.rarity != -1 &&
-    //       (card.uses > 0 || card.uses == -1)) {
-    //     if (card.rarity == newIndex) {
-    //       indexes.add(globals.cardsList.indexOf(card));
-    //       rarityIndexes[card.rarity] += 1;
-    //     }
-    //   }
-    // }
-
     // setState(() {
-    //   rarityPercentages =
-    //       "☆ ${(rarityIndexes[0] / indexes.length * 100).toStringAsFixed(2)}%★ ${(rarityIndexes[1] / indexes.length * 100).toStringAsFixed(2)}%★★ ${(rarityIndexes[2] / indexes.length * 100).toStringAsFixed(2)}%★★★ ${(rarityIndexes[3] / indexes.length * 100).toStringAsFixed(2)}%★★★★ ${(rarityIndexes[4] / indexes.length * 100).toStringAsFixed(2)}% ★★★★★ ${(rarityIndexes[5] / indexes.length * 100).toStringAsFixed(2)}% ★★★★★★ ${(rarityIndexes[6] / indexes.length * 100).toStringAsFixed(2)}%";
+    //   rarityPercentages = "$rarityIndex, $newIndex, ${indexes.length}";
     // });
+
+    List<int> availableCardsPerIndex = [0, 0, 0, 0, 0, 0];
+    for (NabboCard card in globals.cardsList) {
+      if (card.active &&
+          card.rarity > 0 &&
+          (card.uses > 0 || card.uses == -1)) {
+        // no card will have rarity 0
+        availableCardsPerIndex[card.rarity - 1] += 1;
+      }
+    }
+
+    String newText = "";
+    for (int i = 0; i < availableCardsPerIndex.length; i++) {
+      for (int s = 0; s <= i; s++) {
+        newText += "★";
+      }
+      newText += " ${availableCardsPerIndex[i]}";
+    }
+    _rarityPercentages = "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
+    setState(() {
+      _rarityPercentages += newText;
+    });
 
     // get current time
     final DateTime now = DateTime.now();
@@ -114,7 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final String formattedDate =
         "${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}";
     // update the log file
-    final String newLog = "$formattedDate - ${globals.cardsList[_index].path}";
+    final String newLog =
+        "$formattedDate - ${globals.cardsList[_index].path} -[$_index]";
     updateLog(newLog);
 
     return newIndex;
@@ -122,9 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String fixPath(path) {
     return path.replaceAll('\\', '/');
-    //return fixedPath;
-    //return "data/flutter_assets/$fixedPath";
-    //return path;
   }
 
   @override
@@ -177,17 +181,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 40,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          // check if roll.mp3 exists
-                          final File rollFile = File('assets/roll.mp3');
-                          if (!rollFile.existsSync()) {
-                            rarityPercentages = "roll.mp3 not found";
-                          }
                           final player = AudioPlayer();
                           await player.play(
                             AssetSource('roll.mp3'),
@@ -200,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
 
                           // wait a second and set _showBigCard to false
-                          await Future.delayed(const Duration(seconds: 45));
+                          await Future.delayed(const Duration(seconds: 1));
                           setState(() {
                             _showBigCard = false;
                           });
@@ -254,16 +253,116 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      Text("LAST"),
-                      Text("CLEAR"),
-                    ],
+                  const SizedBox(
+                    width: 40,
                   ),
                   Column(
                     children: [
-                      Text("SET X"),
-                      Text("SHOW"),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _showBigCard = true;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 20,
+                          ),
+                          backgroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text(
+                          "LAST",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _showBigCard = false;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 20,
+                          ),
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text(
+                          "CLEAR",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        width: 90,
+                        child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              _usrIndex = int.parse(value);
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Index',
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_usrIndex < globals.cardsList.length) {
+                            setState(() {
+                              _index = _usrIndex;
+                              _showBigCard = true;
+                            });
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 20,
+                          ),
+                          backgroundColor: Colors.purple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text(
+                          "SHOW",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ],
@@ -272,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               Text(
-                rarityPercentages,
+                _rarityPercentages,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

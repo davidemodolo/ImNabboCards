@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // open c.txt file
     final File cFile = File('data/flutter_assets/assets/colorRGB.txt');
     // the file is like 233, 3, 5, that's the RGB value for the background color
     // split the string by the comma
@@ -23,10 +22,11 @@ class MyApp extends StatelessWidget {
     final Color cColor =
         Color.fromRGBO(int.parse(c[0]), int.parse(c[1]), int.parse(c[2]), 1.0);
     globals.bgColor = cColor;
+
     return MaterialApp(
       title: 'Nabbo Cards',
       home: Scaffold(
-        backgroundColor: cColor, // Set the background color to purple
+        backgroundColor: globals.bgColor, // Set the background color to purple
         body: const HomeScreen(),
       ),
     );
