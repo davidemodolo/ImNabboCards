@@ -16,56 +16,67 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _index = 0;
-  int _usrIndex = 0;
-  bool _showBigCard = false;
+  int _index = 0; // index of the current big card
+  int _usrIndex = 0; // custom index from the user
+  bool _showBigCard = false; // show the big card or not
 
-  String _rarityPercentages =
+  String _rarityPercentages = // string that contains the percentages and #cards
       "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
 
+  // function that opens the log file and adds a new line
   void updateLog(String newLog) {
+    // log file path from the globals file
     final File logFile = File(globals.logFile);
     // add the newLog line to the file
     logFile.writeAsStringSync("${logFile.readAsStringSync()}\n$newLog");
   }
 
   int _getRandomIndex() {
-    // 1 = 34%, 2 = 25%, 3 = 18%, 4 = 13%, 5 = 8%, 6 = 2%
-    // draw the rarity
-    Random random = Random();
-    int rarity = random.nextInt(100);
-    int rarityIndex = 0;
     // count for each rarity how many cards are active and have uses > 0
     List<int> rarityIndexes = [0, 0, 0, 0, 0, 0, 0];
     for (NabboCard card in globals.cardsList) {
-      if (card.active &&
-          card.rarity > 0 &&
-          (card.uses > 0 || card.uses == -1) &&
+      if (card.active && // card must be active
+          card.rarity > 0 && // card must have a rarity set
+          (card.uses > 0 || card.uses == -1) && // card must have some uses left
           card.isMarked()) {
         rarityIndexes[card.rarity] += 1;
       }
     }
-
+    // draw the rarity
+    Random random = Random(); // i think this could be a final variable outside
+    int rarity = random.nextInt(100);
+    int rarityIndex = 0;
+    // based on the random number, get the rarity of the future drawn card
     if (rarity < 34) {
+      //34%
       rarityIndex = 1;
     } else if (rarity < 59) {
+      //25%
       rarityIndex = 2;
     } else if (rarity < 77) {
+      //18%
       rarityIndex = 3;
     } else if (rarity < 90) {
+      //13%
       rarityIndex = 4;
     } else if (rarity < 98) {
+      //8%
       rarityIndex = 5;
     } else {
+      //2%
       rarityIndex = 6;
     }
 
+    // check if there are cards with rarity == rarityIndex,
+    // otherwise roll to the other rarities (looking first for lower cards)
     while (rarityIndexes[rarityIndex] == 0) {
-      rarityIndex -= 1;
+      rarityIndex -= 1; // start with lower rarities
       if (rarityIndex < 1) {
+        // if no card in lower rarities, start with higher
         while (rarityIndexes[rarityIndex] == 0) {
           rarityIndex += 1;
           if (rarityIndex > 6) {
+            // if no card in higher rarities, return 0
             setState(() {
               _rarityPercentages = "No card found";
             });
@@ -77,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // get the list of indexes of cards with rarity == rarityIndex
-
+    //TODO: merge this for with the previous one putting the rarityIndex if in the while
     List<int> indexes = [];
     for (NabboCard card in globals.cardsList) {
       if (card.active &&
@@ -88,16 +99,13 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
     int newIndex = indexes[random.nextInt(indexes.length)];
-    // setState(() {
-    //   rarityPercentages = "$rarityIndex, $newIndex, ${indexes.length}";
-    // });
-
+    // TODO: also merge this for with the first one
     List<int> availableCardsPerIndex = [0, 0, 0, 0, 0, 0];
     for (NabboCard card in globals.cardsList) {
       if (card.active &&
           card.rarity > 0 &&
           (card.uses > 0 || card.uses == -1)) {
-        // no card will have rarity 0
+        // no card will have rarity 0 so we can do this
         availableCardsPerIndex[card.rarity - 1] += 1;
       }
     }
