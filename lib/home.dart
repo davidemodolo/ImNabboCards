@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
     lastCards.add(newIndex);
     setState(() {
       //_rarityPercentages += newText;
-      _rarityPercentages = "Ultime carte $lastCards";
+      _rarityPercentages = "LAST: $lastCards";
     });
 
     return newIndex;
@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (lastCards.isNotEmpty) {
                               updateLog("LAST");
                               _index = lastCards.removeLast();
-                              _rarityPercentages = "Ultime carte $lastCards";
+                              _rarityPercentages = "LAST: $lastCards";
                               _showBigCard = true;
                             }
                           });
@@ -354,7 +354,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (_usrIndex < globals.cardsList.length) {
                             setState(() {
                               _index = _usrIndex;
+                              lastCards.add(_index);
                               updateLog("USER");
+                              _rarityPercentages = "LAST: $lastCards";
                               _showBigCard = true;
                             });
                           }
@@ -388,7 +390,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 _rarityPercentages,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
