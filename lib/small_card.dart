@@ -46,8 +46,7 @@ class _SmallCardState extends State<SmallCard> {
       onLongPress: () {
         setState(() {
           isActive = !globals.cardsList[widget.index].active;
-          globals.cardsList[widget.index].active =
-              isActive; // change the active state of the card
+          globals.cardsList[widget.index].active = isActive;
           globals.saveJsonState();
         });
       },
@@ -93,7 +92,7 @@ class _SmallCardState extends State<SmallCard> {
                     top: 5,
                     right: 5,
                     child: Text(
-                      '${widget.index}',
+                      widget.index.toString(),
                       style: TextStyle(
                         color: globals.bgColor,
                         fontWeight: FontWeight.bold,
@@ -145,7 +144,7 @@ class _SmallCardState extends State<SmallCard> {
                           });
                         }
                       },
-                      child: const Text("-1"),
+                      child: const Text("-"),
                     ),
                     const SizedBox(
                       width: 5,
@@ -165,7 +164,7 @@ class _SmallCardState extends State<SmallCard> {
                           globals.cardsList[widget.index].uses += 1;
                         });
                       },
-                      child: const Text("+1"),
+                      child: const Text("+"),
                     ),
                   ],
                 )

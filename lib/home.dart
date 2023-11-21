@@ -19,16 +19,27 @@ class _HomeScreenState extends State<HomeScreen> {
   int _index = 0; // index of the current big card
   int _usrIndex = 0; // custom index from the user
   bool _showBigCard = false; // show the big card or not
+  List<int> lastCards = [];
 
-  String _rarityPercentages = // string that contains the percentages and #cards
-      "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
+  String _rarityPercentages = "";
+  //"★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
 
   // function that opens the log file and adds a new line
   void updateLog(String newLog) {
     // log file path from the globals file
     final File logFile = File(globals.logFile);
     // add the newLog line to the file
-    logFile.writeAsStringSync("${logFile.readAsStringSync()}\n$newLog");
+    // get current time
+    final DateTime now = DateTime.now();
+    // set it as DAY/MONTH/YEAR HOUR:MINUTE:SECOND
+    final String formattedDate =
+        "${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}";
+
+    final String finalLog =
+        "$formattedDate - ${globals.cardsList[_index].path}";
+
+    logFile.writeAsStringSync(
+        "${logFile.readAsStringSync()}\n[$newLog] [$_index] $finalLog");
   }
 
   int _getRandomIndex() {
@@ -88,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // get the list of indexes of cards with rarity == rarityIndex
-    //TODO: merge this for with the previous one putting the rarityIndex if in the while
     List<int> indexes = [];
     for (NabboCard card in globals.cardsList) {
       if (card.active &&
@@ -99,7 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
     int newIndex = indexes[random.nextInt(indexes.length)];
-    // TODO: also merge this for with the first one
     List<int> availableCardsPerIndex = [0, 0, 0, 0, 0, 0];
     for (NabboCard card in globals.cardsList) {
       if (card.active &&
@@ -110,27 +119,19 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    String newText = "";
-    for (int i = 0; i < availableCardsPerIndex.length; i++) {
-      for (int s = 0; s <= i; s++) {
-        newText += "★";
-      }
-      newText += " ${availableCardsPerIndex[i]}";
-    }
-    _rarityPercentages = "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
+    // String newText = "";
+    // for (int i = 0; i < availableCardsPerIndex.length; i++) {
+    //   for (int s = 0; s <= i; s++) {
+    //     newText += "★";
+    //   }
+    //   newText += " ${availableCardsPerIndex[i]}";
+    // }
+    //_rarityPercentages = "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
+    lastCards.add(newIndex);
     setState(() {
-      _rarityPercentages += newText;
+      //_rarityPercentages += newText;
+      _rarityPercentages = "Ultime carte $lastCards";
     });
-
-    // get current time
-    final DateTime now = DateTime.now();
-    // set it as DAY/MONTH/YEAR HOUR:MINUTE:SECOND
-    final String formattedDate =
-        "${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}";
-    // update the log file
-    final String newLog =
-        "$formattedDate - ${globals.cardsList[_index].path} -[$_index]";
-    updateLog(newLog);
 
     return newIndex;
   }
@@ -200,15 +201,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                           setState(() {
                             _index = _getRandomIndex();
+                            updateLog("DRAW");
                             globals.cardsList[_index].cardDrawn();
                             globals.saveJsonState();
                             _showBigCard = true;
                           });
-
-                          // wait a second and set _showBigCard to false
-                          await Future.delayed(const Duration(seconds: 1));
+                          await Future.delayed(const Duration(seconds: 45));
                           setState(() {
-                            _showBigCard = false;
+                            if (_showBigCard) {
+                              _showBigCard = false;
+                            }
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -268,7 +270,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            _showBigCard = true;
+                            if (lastCards.isNotEmpty) {
+                              updateLog("LAST");
+                              _index = lastCards.removeLast();
+                              _rarityPercentages = "Ultime carte $lastCards";
+                              _showBigCard = true;
+                            }
                           });
                         },
                         style: ElevatedButton.styleFrom(
@@ -347,6 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (_usrIndex < globals.cardsList.length) {
                             setState(() {
                               _index = _usrIndex;
+                              updateLog("USER");
                               _showBigCard = true;
                             });
                           }

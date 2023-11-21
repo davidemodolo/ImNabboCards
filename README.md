@@ -34,13 +34,13 @@ If there isn't any available card of the randomly selected rarity, it first chec
 
 The pool can be made by **A** cards, **B** cards or **both**.
 
-**Functions:** *TODO*
-- DRAW
-- ALL/A/B
-- LAST
-- CLEAR
-- INDEX
-- SHOW
+**Functions:**
+- DRAW: draws a card, shows it and, after 45 seconds, hides it
+- ALL/A/B: set the marker from which draw the random card
+- LAST: show the last card drawn (until clear)
+- CLEAR: hide the current big card
+- INDEX: set the index of a specific card
+- SHOW: show the card of the specified index that <u>ovverides the last card</u> (until clear)
 
 Folders structure:
 
@@ -68,9 +68,8 @@ JSON structure:
 ## TODO
 - [x] show last drawn card - time unlimited
 - [x] show a specific card - time unlimited
-- [ ] decide a number of markers
-- [ ] ask for screen resolution
-- [ ] ask again for check order if no card available
-- [ ] comment code
-- [ ] OBS smoothness 840 nice glowing effect
-- [ ] draw with index overrides LAST
+- [x] decide a number of markers
+- [x] ask for screen resolution
+- [x] ask again for check order if no card available
+- [x] OBS smoothness 840 nice glowing effect
+- [x] draw with index overrides LAST
