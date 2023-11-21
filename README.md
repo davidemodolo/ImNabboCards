@@ -37,10 +37,10 @@ The pool can be made by **A** cards, **B** cards or **both**.
 **Functions:**
 - DRAW: draws a card, shows it and, after 45 seconds, hides it
 - ALL/A/B: set the marker from which draw the random card
-- LAST: show the last card drawn (until clear)
+- LAST: pop the last card from the stack (it remains until **CLEAR**)
 - CLEAR: hide the current big card
 - INDEX: set the index of a specific card
-- SHOW: show the card of the specified index that <u>ovverides the last card</u> (until clear)
+- SHOW: show the card of the specified index that <u>ovverides the last card</u> (it remains until **CLEAR**)
 
 Folders structure:
 
