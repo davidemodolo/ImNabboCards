@@ -153,8 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final cards = json.decode(file.readAsStringSync());
     // 2. create the list of Card objcects
     globals.cardsList = cards["cards"]
-        .map<NabboCard>((e) => NabboCard(
-            e["path"], e["rarity"], e["active"], e["uses"], e["marker"]))
+        .map<NabboCard>((e) => NabboCard(e["path"], e["rarity"], e["active"],
+            e["uses"], e["marker"], e["sound"]))
         .toList();
     // 3. read all the .png in the assets/cards
     final List<String> paths = Directory(globals.cardsImagesDirectory)
@@ -170,13 +170,13 @@ class _HomeScreenState extends State<HomeScreen> {
     for (String path in paths) {
       if (!globals.cardsList
           .any((card) => card.path == fixPath(path).substring(20))) {
-        globals.cardsList.add(NabboCard(path.substring(20), -1, true, 0, 1));
+        globals.cardsList.add(NabboCard(path.substring(20), -1, true, 0, 1, 0));
         // print("Added card with path $path");
       }
     }
 
     globals.saveJsonState();
-
+    final player = AudioPlayer();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -195,10 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          final player = AudioPlayer();
-                          await player.play(
-                            AssetSource('roll.mp3'),
-                          );
                           setState(() {
                             _index = _getRandomIndex();
                             updateLog("DRAW");
@@ -206,6 +202,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             globals.saveJsonState();
                             _showBigCard = true;
                           });
+                          await player.play(
+                            AssetSource(globals.soundToPlay[
+                                globals.cardsList[_index].soundIndex]),
+                          );
                           await Future.delayed(const Duration(seconds: 45));
                           setState(() {
                             if (_showBigCard) {

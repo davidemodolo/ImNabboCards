@@ -63,7 +63,10 @@ flutter:
   assets:
     - assets/cards/
     - assets/cards.json
-    - assets/roll.mp3
+    - assets/default.mp3
+    - assets/positive.mp3
+    - assets/negative.mp3
+    - assets/funny.mp3
     - assets/log.txt
     - assets/colorRGB.txt
 

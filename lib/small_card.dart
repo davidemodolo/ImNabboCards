@@ -108,20 +108,41 @@ class _SmallCardState extends State<SmallCard> {
             ),
             Column(
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      globals.cardsList[widget.index].changeMarker();
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: globals.cardsList[widget.index].isMarked()
-                        ? Colors.green
-                        : Colors.red,
-                  ),
-                  child: Text(
-                    globals.cardsList[widget.index].getMarkerText(),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          globals.cardsList[widget.index].changeMarker();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            globals.cardsList[widget.index].isMarked()
+                                ? Colors.green
+                                : Colors.red,
+                      ),
+                      child: Text(
+                        globals.cardsList[widget.index].getMarkerText(),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          globals.cardsList[widget.index].changeSound();
+                        });
+                      },
+                      // style: ElevatedButton.styleFrom(
+                      //   backgroundColor: globals.cardsList[widget.index].isMarked()
+                      //       ? Colors.green
+                      //       : Colors.red,
+                      // ),
+                      child: Text(
+                        globals.cardsList[widget.index].getSound(),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 5,

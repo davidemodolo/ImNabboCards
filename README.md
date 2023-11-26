@@ -9,20 +9,23 @@
 
 **Before running:**
 1. put all `.png` in the `data\flutter_assets\assets\cards` folder (<u>at least one card; no whitespace characters in the names</u>);
-2. put a .mp3 file in the `data\flutter_assets\assets` folder;
+2. put the four .mp3 files in the `data\flutter_assets\assets` folder (`default.mp3`, `positive.mp3`, `negative.mp3`, `funny.mp3`);
 3. write the RGB color for the background in the `data\flutter_assets\assets\colorRGB.txt` file;
 4. start the program.
+
+IMPORTANT: the program will not run if there isn't at least one card and all the needed files.
 
 **Setup:**
 - long press on a card to add/remove (enable/disable) it from the pool;
 - single press on a card to increase its rarity (1 to 6 and back);
 - set the number of times a card can be drawn, set as `-1` if unlimited;
-- set the marker of each card as A or B.
+- set the marker of each card as **A**, **B** or **All** (by clicking the button);
+- set the sound to be played when drawn (by clicking the button);
 
 **Draw steps:**
-1. play the `.mp3` file;
-2. randomly select a rarity;
-3. randomly select a card of such rarity;
+1. randomly select a rarity;
+2. randomly select a card of such rarity;
+3. play the related `.mp3` sound;
 4. 1.5s animation "from the right" that makes the drawn card appear;
 5. the card stays for 45 seconds;
 6. hide the card;
@@ -32,7 +35,9 @@
 If there isn't any available card of the randomly selected rarity, it first checks the lower rarities and then the higher rarities.
 > _e.g.: if Rarity 4 is selected and it has no cards, the check order is 3-2-1-5-6. If there isn't any card available, it returns the first card whether is active/drawable or not._
 
-The pool can be made by **A** cards, **B** cards or **both**.
+If no card is found (so there isn't any card avaliable), it returns the card at index 0.
+
+The pool can be made by **A** cards, **B** cards or **All**.
 
 **Functions:**
 - DRAW: draws a card, shows it and, after 45 seconds, hides it
@@ -64,12 +69,3 @@ JSON structure:
 }
 
 ```
-
-## TODO
-- [x] show last drawn card - time unlimited
-- [x] show a specific card - time unlimited
-- [x] decide a number of markers
-- [x] ask for screen resolution
-- [x] ask again for check order if no card available
-- [x] OBS smoothness 840 nice glowing effect
-- [x] draw with index overrides LAST

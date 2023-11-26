@@ -10,6 +10,12 @@ const String cardsImagesDirectory = 'data/flutter_assets/assets/cards';
 int activeMarker = 0;
 const String bgColorFile = 'data/flutter_assets/assets/colorRGB.txt';
 const String logFile = 'data/flutter_assets/assets/log.txt';
+const List<String> soundToPlay = [
+  "default.mp3",
+  "positive.mp3",
+  "negative.mp3",
+  "funny.mp3",
+];
 
 Color bgColor = Colors.purple;
 
@@ -23,7 +29,8 @@ void saveJsonState() {
             "rarity": card.rarity,
             "active": card.active,
             "uses": card.uses,
-            "marker": card.marker
+            "marker": card.marker,
+            "sound": card.soundIndex
           })
       .toList();
   final Map<String, dynamic> jsonMap = {"cards": cardsMapList};
