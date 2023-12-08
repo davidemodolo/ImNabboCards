@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Random random = Random(); // i think this could be a final variable outside
     int rarity = random.nextInt(100);
     int rarityIndex = 0;
+    updateLog(rarity.toString());
     // based on the random number, get the rarity of the future drawn card
     if (rarity < 34) {
       //34%

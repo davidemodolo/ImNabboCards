@@ -69,3 +69,9 @@ JSON structure:
 }
 
 ```
+
+TODO:
+- [ ] update json when any parameter of a card is changed
+- [ ] understand if the random draws have a correct probability
+- [ ] set max last array size
+- [ ] maybe 25 sec?
