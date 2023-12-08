@@ -196,21 +196,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       ElevatedButton(
                         onPressed: () async {
                           setState(() {
+                            _showBigCard = false;
                             _index = _getRandomIndex();
                             updateLog("DRAW");
                             globals.cardsList[_index].cardDrawn();
                             globals.saveJsonState();
                             _showBigCard = true;
                           });
+                          int oldIndex = _index;
                           await player.play(
                             AssetSource(globals.soundToPlay[
                                 globals.cardsList[_index].soundIndex]),
                           );
-                          await Future.delayed(const Duration(seconds: 45));
-                          setState(() {
-                            if (_showBigCard) {
-                              _showBigCard = false;
-                            }
+                          await Future.delayed(const Duration(seconds: 30), () {
+                            setState(() {
+                              if (oldIndex == _index) {
+                                _showBigCard = false;
+                              }
+                            });
                           });
                         },
                         style: ElevatedButton.styleFrom(
