@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final DateTime now = DateTime.now();
     // set it as DAY/MONTH/YEAR HOUR:MINUTE:SECOND
     final String formattedDate =
-        "${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}";
+        "[${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}]";
 
     final String finalLog =
         "$formattedDate - ${globals.cardsList[_index].path}";
@@ -129,6 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // }
     //_rarityPercentages = "★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
     lastCards.add(newIndex);
+    if (lastCards.length > 15) {
+      lastCards.removeAt(0);
+    }
     setState(() {
       //_rarityPercentages += newText;
       _rarityPercentages = "LAST: $lastCards";
@@ -176,169 +179,75 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
+    DateTime lastDraw = DateTime.now();
+
     globals.saveJsonState();
     final player = AudioPlayer();
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Flexible(
           fit: FlexFit.tight,
           child: Column(
             children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        globals.rollMarker();
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 20,
+                      ),
+                      backgroundColor: Colors.amber,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: Text(
+                      globals.getMarkerText(),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    _rarityPercentages,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
               BigNabboCard(_index, _showBigCard),
               const SizedBox(
                 height: 40,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            _showBigCard = false;
-                            _index = _getRandomIndex();
-                            updateLog("DRAW");
-                            globals.cardsList[_index].cardDrawn();
-                            globals.saveJsonState();
-                            _showBigCard = true;
-                          });
-                          int oldIndex = _index;
-                          await player.play(
-                            AssetSource(globals.soundToPlay[
-                                globals.cardsList[_index].soundIndex]),
-                          );
-                          await Future.delayed(const Duration(seconds: 30), () {
-                            setState(() {
-                              if (oldIndex == _index) {
-                                _showBigCard = false;
-                              }
-                            });
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
-                          ),
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: const Text(
-                          "ROLL",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            globals.rollMarker();
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
-                          ),
-                          backgroundColor: Colors.amber,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          globals.getMarkerText(),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 40,
-                  ),
-                  Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            if (lastCards.isNotEmpty) {
-                              updateLog("LAST");
-                              _index = lastCards.removeLast();
-                              _rarityPercentages = "LAST: $lastCards";
-                              _showBigCard = true;
-                            }
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
-                          ),
-                          backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: const Text(
-                          "LAST",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _showBigCard = false;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
-                          ),
-                          backgroundColor: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: const Text(
-                          "CLEAR",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 40,
-                  ),
                   Column(
                     children: [
                       SizedBox(
                         width: 90,
                         child: TextField(
+                          style: const TextStyle(
+                              color: Colors.white), // Set text color to white
                           onChanged: (value) {
                             setState(() {
                               _usrIndex = int.parse(value);
@@ -347,6 +256,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Index',
+                            labelStyle: TextStyle(color: Colors.white),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
@@ -359,6 +272,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             setState(() {
                               _index = _usrIndex;
                               lastCards.add(_index);
+                              if (lastCards.length > 15) {
+                                lastCards.removeAt(0);
+                              }
                               updateLog("USER");
                               _rarityPercentages = "LAST: $lastCards";
                               _showBigCard = true;
@@ -385,20 +301,117 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                  const SizedBox(
+                    width: 80,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        _showBigCard = false;
+                        _index = _getRandomIndex();
+                        updateLog("DRAW");
+                        globals.cardsList[_index].cardDrawn();
+                        globals.saveJsonState();
+                        _showBigCard = true;
+                        lastDraw = DateTime.now();
+                        //_rarityPercentages =
+                        //    "[${lastDraw.day}/${lastDraw.month}/${lastDraw.year} ${lastDraw.hour}:${lastDraw.minute}:${lastDraw.second}]";
+                      });
+                      await player.play(
+                        AssetSource(globals
+                            .soundToPlay[globals.cardsList[_index].soundIndex]),
+                      );
+                      await Future.delayed(const Duration(seconds: 10), () {
+                        final DateTime now = DateTime.now();
+                        if (now.difference(lastDraw).inSeconds >= 10) {
+                          setState(() {
+                            //_rarityPercentages =
+                            //    "[${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}]";
+                            _showBigCard = false;
+                          });
+                        }
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 20,
+                      ),
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text(
+                      "ROLL",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        if (lastCards.isNotEmpty) {
+                          updateLog("LAST");
+                          _index = lastCards.removeLast();
+                          _rarityPercentages = "LAST: $lastCards";
+                          _showBigCard = true;
+                        }
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 20,
+                      ),
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text(
+                      "LAST",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _showBigCard = false;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 20,
+                      ),
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text(
+                      "CLEAR",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 40,
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                _rarityPercentages,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              )
             ],
           ),
         ),

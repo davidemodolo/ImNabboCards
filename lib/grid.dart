@@ -16,7 +16,7 @@ class _CardGridState extends State<CardGrid> {
     return Flexible(
       fit: FlexFit.tight,
       child: Container(
-        color: Colors.white,
+        color: Colors.black,
         child: GridView.builder(
           itemCount: globals.cardsList.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
         Color.fromRGBO(int.parse(c[0]), int.parse(c[1]), int.parse(c[2]), 1.0);
     globals.bgColor = cColor;
 
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Nabbo Cards',
       home: Scaffold(
-        backgroundColor: globals.bgColor, // Set the background color to purple
-        body: const HomeScreen(),
+        backgroundColor: Colors.black,
+        body: HomeScreen(),
       ),
     );
   }

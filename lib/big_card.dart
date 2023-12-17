@@ -50,6 +50,7 @@ class _BigNabboCardState extends State<BigNabboCard>
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10),
+      color: globals.bgColor,
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.8,

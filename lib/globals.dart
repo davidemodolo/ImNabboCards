@@ -42,6 +42,7 @@ void saveJsonState() {
 void rollMarker() {
   // roll activeMarker between 0, 1, 2
   activeMarker = (activeMarker + 1) % 3;
+  saveJsonState();
 }
 
 String getMarkerText() {

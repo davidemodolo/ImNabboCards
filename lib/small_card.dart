@@ -19,6 +19,7 @@ class _SmallCardState extends State<SmallCard> {
       rarityIndex = (globals.cardsList[widget.index].rarity % 6) + 1;
       globals.cardsList[widget.index].rarity = rarityIndex;
     });
+    globals.saveJsonState();
   }
 
   @override
