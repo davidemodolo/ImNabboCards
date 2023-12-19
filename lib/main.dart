@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
     globals.bgColor = cColor;
 
     return const MaterialApp(
-      title: 'Nabbo Cards',
+      title: 'Pesca una Harta!',
       home: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 40, 40, 40),
         body: HomeScreen(),
       ),
     );

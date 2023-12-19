@@ -75,4 +75,4 @@ TODO:
 - [ ] understand if the random draws have a correct probability
 - [x] set max last array size
 - [ ] maybe 25 sec?
-- [ ] based on the last line of the log, hide the card
+- [ ] hide the card correctly

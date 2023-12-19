@@ -174,6 +174,7 @@ class _SmallCardState extends State<SmallCard> {
                     Text(
                       globals.cardsList[widget.index].uses.toString(),
                       style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 16,
                       ),
                     ),

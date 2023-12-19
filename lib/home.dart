@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:imnabbo/nabbo_card.dart';
 import 'package:imnabbo/big_card.dart';
@@ -22,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<int> lastCards = [];
 
   String _rarityPercentages = "";
-  //"★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%\n";
+  //"★ 34% ★★ 25% ★★★ 18% ★★★★ 13% ★★★★★ 8% ★★★★★★ 2%";
 
   // function that opens the log file and adds a new line
   void updateLog(String newLog) {
@@ -57,7 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Random random = Random(); // i think this could be a final variable outside
     int rarity = random.nextInt(100);
     int rarityIndex = 0;
-    updateLog(rarity.toString());
     // based on the random number, get the rarity of the future drawn card
     if (rarity < 34) {
       //34%
@@ -144,6 +145,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return path.replaceAll('\\', '/');
   }
 
+  Timer _timer = Timer(const Duration(seconds: 10), () {});
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // 1. read the cards.json file if it exists, otherwise create it
@@ -179,8 +187,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    DateTime lastDraw = DateTime.now();
-
     globals.saveJsonState();
     final player = AudioPlayer();
     return Row(
@@ -191,11 +197,14 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(
+                    width: 20,
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -222,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(
-                    width: 20,
+                    width: 330,
                   ),
                   Text(
                     _rarityPercentages,
@@ -236,18 +245,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               BigNabboCard(_index, _showBigCard),
               const SizedBox(
-                height: 40,
+                height: 10,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const SizedBox(
+                    width: 20,
+                  ),
                   Column(
                     children: [
                       SizedBox(
                         width: 90,
                         child: TextField(
-                          style: const TextStyle(
-                              color: Colors.white), // Set text color to white
+                          style: const TextStyle(color: Colors.white),
                           onChanged: (value) {
                             setState(() {
                               _usrIndex = int.parse(value);
@@ -303,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(
-                    width: 80,
+                    width: 240,
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -314,23 +325,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         globals.cardsList[_index].cardDrawn();
                         globals.saveJsonState();
                         _showBigCard = true;
-                        lastDraw = DateTime.now();
-                        //_rarityPercentages =
-                        //    "[${lastDraw.day}/${lastDraw.month}/${lastDraw.year} ${lastDraw.hour}:${lastDraw.minute}:${lastDraw.second}]";
                       });
                       await player.play(
                         AssetSource(globals
                             .soundToPlay[globals.cardsList[_index].soundIndex]),
                       );
-                      await Future.delayed(const Duration(seconds: 10), () {
-                        final DateTime now = DateTime.now();
-                        if (now.difference(lastDraw).inSeconds >= 10) {
-                          setState(() {
-                            //_rarityPercentages =
-                            //    "[${now.day}/${now.month}/${now.year} ${now.hour}:${now.minute}:${now.second}]";
-                            _showBigCard = false;
-                          });
-                        }
+                      if (_timer.isActive) {
+                        _timer.cancel();
+                      }
+                      _timer = Timer(const Duration(seconds: 30), () {
+                        setState(() {
+                          _showBigCard = false;
+                        });
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -344,13 +350,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     child: const Text(
-                      "ROLL",
+                      "DRAW",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 20,
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -382,6 +391,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -407,10 +419,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 40,
-                  ),
                 ],
+              ),
+              const SizedBox(
+                height: 10,
               ),
             ],
           ),
