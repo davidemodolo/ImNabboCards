@@ -48,8 +48,8 @@ class _BigNabboCardState extends State<BigNabboCard>
 
   @override
   Widget build(BuildContext context) {
-    const double imgWidth = 800 * 0.9;
-    const double imgHeight = 1250 * 0.9;
+    const double imgWidth = 800 * 0.8;
+    const double imgHeight = 1250 * 0.8;
     return Container(
       margin: const EdgeInsets.all(10),
       color: globals.bgColor,
