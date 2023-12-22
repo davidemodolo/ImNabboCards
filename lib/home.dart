@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               Row(
                 //mainAxisAlignment: MainAxisAlignment.center,
@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               BigNabboCard(_index, _showBigCard),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               Row(
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -275,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 5,
                       ),
                       ElevatedButton(
                         onPressed: () {

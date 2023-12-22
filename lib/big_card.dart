@@ -49,26 +49,30 @@ class _BigNabboCardState extends State<BigNabboCard>
   @override
   Widget build(BuildContext context) {
     const double imgWidth = 800 * 0.9;
-    const double imgHeight = 1250 * 0.75;
+    const double imgHeight = 1250 * 0.7;
     return Container(
       margin: const EdgeInsets.all(10),
       color: globals.bgColor,
       child: SizedBox(
         width: imgWidth, //MediaQuery.of(context).size.width * 0.8,
         height: imgHeight, //MediaQuery.of(context).size.height * 0.8,
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(1.5, 0),
-            end: const Offset(0, 0),
-          ).animate(
-            CurvedAnimation(
-              curve: Curves.easeInOut,
-              parent: _animationController,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 10, bottom: 10), // only up and down
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.5, 0),
+              end: const Offset(0, 0),
+            ).animate(
+              CurvedAnimation(
+                curve: Curves.easeInOut,
+                parent: _animationController,
+              ),
             ),
-          ),
-          child: Image(
-            image: AssetImage(
-              globals.cardsList[widget.index].path,
+            child: Image(
+              image: AssetImage(
+                globals.cardsList[widget.index].path,
+              ),
             ),
           ),
         ),
