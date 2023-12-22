@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(
-                    width: 330,
+                    width: 250, //330
                   ),
                   Text(
                     _rarityPercentages,
@@ -314,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(
-                    width: 240,
+                    width: 160, //240
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -422,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
             ],
           ),

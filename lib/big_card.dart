@@ -48,7 +48,7 @@ class _BigNabboCardState extends State<BigNabboCard>
 
   @override
   Widget build(BuildContext context) {
-    const double imgWidth = 800 * 0.9;
+    const double imgWidth = 800 * 0.8;
     const double imgHeight = 1250 * 0.7;
     return Container(
       margin: const EdgeInsets.all(10),
@@ -57,8 +57,10 @@ class _BigNabboCardState extends State<BigNabboCard>
         width: imgWidth, //MediaQuery.of(context).size.width * 0.8,
         height: imgHeight, //MediaQuery.of(context).size.height * 0.8,
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 10, bottom: 10), // only up and down
+          padding: const EdgeInsets.only(
+            top: 10,
+            bottom: 10,
+          ),
           child: SlideTransition(
             position: Tween<Offset>(
               begin: const Offset(1.5, 0),
